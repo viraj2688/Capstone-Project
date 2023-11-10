@@ -1,0 +1,44 @@
+
+.row{
+    margin-top: 2%;
+}
+/* MAIN IMAGE */
+
+.img-fluid{
+    border: solid black 1px;
+    align-content: center;
+    height: fit-content;
+    width: fit-content;
+    margin-top: 0%;
+    margin-left: 0px;
+}
+
+/* THREE IAMGES ADMINATRATOR AUTHOR VILLAGERS  */
+
+.img-fluid1{
+
+    border: solid black 1px;
+    border-radius: 100%;
+    /* display:inline-block; */
+    align-self: center;
+    height: 250px;
+    width: 250px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.containermarketing{
+    border: solid black 1px;
+    background-color:whitesmoke;
+}
+#buttons{
+
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    height: 50px;
+    width: 250px;
+    color: rgb(199, 30, 30);
+    background-color: rgb(32, 225, 110);
+}

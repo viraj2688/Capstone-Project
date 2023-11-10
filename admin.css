@@ -1,0 +1,67 @@
+span {
+    color: rgb(226, 236, 239);
+    margin: top 5px;
+    
+}
+
+.admin-img {
+    float: left;
+    height: 60px;
+    width: 60px;
+    clear: left;
+}
+
+.container-fluid {
+    background-color: rgb(75, 127, 241);
+}
+
+.col {
+    /* background-image: url(./image/watertap.jpg);  */
+
+    border: solid black 1.5px;
+}
+
+#button{
+    position: relative;
+    margin-top: 10px;
+    background-color: rgb(133, 210, 220);
+    font: bold;
+    color: black;
+    align-self: center;
+    height: max-content;
+    width: max-content;
+}
+/* Image portion start  */
+
+.img-fluid{
+    /* border-radius: 100%; */
+    border: solid black 0.5px;
+    margin-top: 10px;
+    align-self: center;
+    height: 70%;
+    width: 90%;
+}
+.img-fluid1{
+    margin-top: 10px;
+    align-self: center;
+    height: 70%;
+    width: 90%;
+}
+
+
+
+.container.text-center {
+    background-image: url(./image/waterbackground.jpg);
+}
+
+/* slider  */
+
+#carouselExampleIndicators{
+    height: fit-content;
+    width: fit-content;
+    margin-top: 10px;
+    border: solid black 0.5px;
+
+}
+
+/* Image portion end  */

@@ -1,0 +1,62 @@
+.container-fluid {
+    background-color: rgb(75, 127, 241);
+}
+
+span {
+    color: white;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(./image/waterbackground.jpg);
+    border: solid black 0.5px;
+}
+
+.container {
+    max-width: 400px;
+    margin:0 auto ;
+    padding: 20px;
+    background-color: #271212;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+h2{
+    color: white;
+    text-decoration: underline;
+  }

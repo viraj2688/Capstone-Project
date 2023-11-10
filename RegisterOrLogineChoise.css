@@ -1,0 +1,26 @@
+.container-fluid {
+    background-color: rgb(75, 127, 241);
+}
+
+.col1{
+    position: relative;
+    align-content: center;
+    margin-left: 30px;
+    max-width: fit-content;
+    max-height: fit-content;
+   
+}
+
+.col2{
+    margin-top: 10px;
+    margin-left: 30px;
+    max-width: fit-content;
+    max-height: fit-content;
+    
+}
+
+.container{
+    max-width: fit-content;
+    max-height: fit-content;
+    
+}
