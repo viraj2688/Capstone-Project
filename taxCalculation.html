@@ -11,6 +11,7 @@
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="taxCalculation.css">
+    <script type="module" src="Taxcalculation.js"></script>
 </head>
 
 <body>
@@ -36,23 +37,25 @@
             </div>
             <div class="form-group">
                 <label for="Numbers of Connections">Numbers of Connections:</label>
-                <input type="number" id="Numbers of Connections" name="Numbers of Connections" required>
+                <input type="number" id="numbers_of_connections" name="Numbers of Connections" required>
             </div>
             <div class="form-group">
                 <label for="Volume of water usage">Volume of water usage(approx):</label>
-                <input type="number" id="Volume of water usage" name="Volume of water usage" required>
+                <input type="number" id="volume_of_water_usage" name="Volume of water usage" required>
             </div>
             <div class="form-group">
                 <label for="calculation">Rate of water/Liter:</label>
-                <input type="number" id="Rate of water/Liter" name="Rate of water/Liter" required>
+                <input type="number" id="rate_of_water" name="Rate of water/Liter" required>
             </div>
             <br>
             <div class="form-group">
-                <button type="submit">Calculate</button>
+                <button type="submit" id="btnCalculateWaterTax">Calculate</button>
             </div>
             <div class="form-group">
-                <label for="calculation">Ammount of Tax :</label>
-                <input type="number" id="Ammount of Tax " name="Ammount of Tax " required>
+                <label for="calculation">Ammount of Tax :
+                    <div id="result"></div>
+                </label>
+                <div class="tax-amount"></div>
             </div>
         </form>
     </div>
