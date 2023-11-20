@@ -10,6 +10,8 @@
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="PenaltyCalculation.css">
+    <script type="module" src="PenaltyCalculation.js"></script>
+
     <title>दंड आकरणी</title>
 </head>
 
@@ -30,7 +32,7 @@
                 <label for="username">Username:(Adhar Number)</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
             </div>
@@ -41,21 +43,22 @@
             <div class="form-group">
                 <label for="mobile Number">Mobile Number:</label>
                 <input type="mobile number" id="Mobile Number" name="Mobile Number" required>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="PenaltyCalculation">Delayed Days:</label>
-                <input type="mobile number" id="Mobile Number" name="Mobile Number" required>
+                <input type="mobile number" id="DelayedDays" name="Mobile Number" required>
             </div>
             <div class="form-group">
                 <label for="calculation">Penalty/day:</label>
-                <input type="number" id="Rate of water/Liter" name="Rate of water/Liter" required>
+                <input type="number" id="PeneltyRate" name="Rate of water/Liter" required>
             </div>
             <div class="form-group">
-                <button type="submit">Calculate Penalty</button>
+                <button type="submit" id="btnPeneltyCal">Calculate Penalty</button>
             </div>
             <div class="form-group">
                 <label for="calculation">Ammount of Penalty :</label>
-                <input type="number" id="Ammount of Tax " name="Ammount of Tax " required>
+                <div id="resultPenelty"></div>
+                <!-- <input type="number" id="Ammount of Tax " name="Ammount of Tax " required> -->
             </div>
         </form>
     </div>
