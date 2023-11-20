@@ -19,5 +19,5 @@ btnCalculateWaterTax.addEventListener('click', function (e) {
     const waterTax = connections * volume * rate;
 
     // Display the result on the HTML page
-    resultElement.textContent = "Amount of Tax : " + waterTax.toFixed(2);
+    resultElement.textContent = "Amount of Tax :  " + waterTax.toFixed(2);
 });
