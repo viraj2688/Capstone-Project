@@ -1,36 +1,22 @@
-#navbar {
-    background-color: rgb(75, 127, 241);
+/* Your existing CSS code */
+
+.toggle-button-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.container{
-    margin-top: 3%;
-    margin-bottom: 3%;
-    align-items: center;
-    height: fit-content;
-    width: fit-content;
+.compartment {
+    display: block;
 }
 
-.col{
-    margin-left:px;
-   border: solid black 1px;
-   border-radius: 5%;
-   height: fit-content;
-   width: fit-content;
+.email-list {
+    list-style: none;
+    padding: 0;
 }
 
-.paycontainer{
-    margin-top: 3%;
-    border-radius: 5%;
-    margin-left: 12%;
-    text-align: center;
-    border: solid black 1px;
-    height: fit-content;
-    width: fit-content;
-}
-
-#PaymentOption{
-}
-
-.nav-link{
-    margin-left: 60px;
+.email-list li {
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 5px;
 }

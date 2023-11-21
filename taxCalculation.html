@@ -26,14 +26,10 @@
     </nav>
     <div class="container">
         <h2>Tax Calculator</h2>
-        <form>
-            <div class="form-group">
-                <label for="Name of Owner">Name of Owner :</label>
-                <input type="text" id="Name of Owner" name="Name of Owner" required>
-            </div>
+        <form id="taxForm">
             <div class="form-group">
                 <label for="Name of Owner">Username:(Adhar Number)</label>
-                <input type="text" id="Name of Owner" name="Name of Owner" required>
+                <input type="text" id="user_adhar_for_tax" name="Username" required>
             </div>
             <div class="form-group">
                 <label for="Numbers of Connections">Numbers of Connections:</label>
@@ -49,10 +45,10 @@
             </div>
             <br>
             <div class="form-group">
-                <button type="submit" id="btnCalculateWaterTax">Calculate</button>
+                <button type="button" id="btnCalculateWaterTax" onclick="calculateWaterTax()">Calculate</button>
             </div>
             <div class="form-group">
-                <label for="calculation">Ammount of Tax :
+                <label for="calculation">Amount of Tax :
                     <div id="result"></div>
                 </label>
                 <div class="tax-amount"></div>
@@ -64,7 +60,6 @@
             <span style="color: red;"> कॉपीराइट © २०२३ ग्रामपंचायत देववाडी. <br> सर्व हक्क राखीव.</span>
         </div>
     </div>
-
 </body>
 
 </html>
