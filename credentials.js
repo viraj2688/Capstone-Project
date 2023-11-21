@@ -61,7 +61,7 @@ btnSubmit.addEventListener('click', function (e) {
       };
 
       // Set data in the database at a specific path
-      set(ref(database, 'users/' + user.uid), user_data)
+      set(ref(database, 'users/' + valueUserName), user_data)
         .then(() => {
           alert("User registered successfully!");
         })
