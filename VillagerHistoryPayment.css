@@ -3,15 +3,22 @@
 .toggle-button-container {
     margin-top: 10px;
     margin-bottom: 10px;
+    text-align: center;
+    
 }
 
-.compartment {
+h2{
     display: block;
+    text-align: center;
+    text-decoration: underline;
 }
 
 .email-list {
     list-style: none;
     padding: 0;
+    /* width: fit-content;
+    height: fit-content; */
+    text-align: center;
 }
 
 .email-list li {
@@ -19,4 +26,19 @@
     margin-bottom: 5px;
     padding: 10px;
     border-radius: 5px;
+}
+
+.container-fluid {
+    background-color: rgb(75, 127, 241);
+}
+
+.container{
+    border: solid rgb(134, 215, 134) 2px;
+    height: fit-content;
+    width: fit-content;
+    margin-bottom: 10px;
+    
+}
+button{
+    background-color: rgb(17, 192, 37);
 }
