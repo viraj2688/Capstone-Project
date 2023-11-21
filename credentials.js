@@ -22,7 +22,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app); // Initialize Firebase Auth
 const database = getDatabase();
 
-const password = document.getElementById("password");
+const password = document.getElementById("password"); 
 const email = document.getElementById("email");
 const userName = document.getElementById("username");
 const mobileNumber = document.getElementById("MobileNumber");
@@ -61,7 +61,7 @@ btnSubmit.addEventListener('click', function (e) {
       };
 
       // Set data in the database at a specific path
-      set(ref(database, 'users/' + user.uid), user_data)
+      set(ref(database, 'users/' + valueUserName), user_data)
         .then(() => {
           alert("User registered successfully!");
         })

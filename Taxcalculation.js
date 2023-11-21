@@ -1,8 +1,7 @@
 // Firebase initialization
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
-// import { getAuth } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-import { getDatabase, ref, set ,orderByChild} from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,7 +17,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-// const auth = getAuth(app); // Initialize Firebase Auth
 const database = getDatabase();
 
 const NumberOfConnections = document.getElementById("numbers_of_connections");
@@ -46,45 +44,25 @@ btnCalculateWaterTax.addEventListener('click', function (e) {
     // Display the result on the HTML page
     resultElement.textContent = "Amount of Tax :  " + waterTax.toFixed(2);
 
-    saveTaxToFirebase(userAdhar, waterTax)
-
+    // Assuming 'userAdhar' is the 'userName' in your case
+    saveTaxToFirebase(userAdhar, waterTax);
 });
 
 // Function to save tax information to Firebase
-// Function to save tax information to Firebase
-// Function to save tax information to Firebase
-function saveTaxToFirebase(adharNumber, taxAmount) {
+function saveTaxToFirebase(userName, taxAmount) {
     const d = new Date();
-    let currentMonthIndex = d.getMonth();
+    let currentMonthIndex = d.getMonth() + 1;
+    let currentYear = d.getFullYear();
 
-    // Reference to the users' data
-    var usersRef = ref(database, 'users');
+    // Reference to the user's tax data
+    var userTaxRef = ref(database, `users/${userName}/waterTax/${currentMonthIndex}-${currentYear}`);
 
-    // Create a query to find the user with the specified adharNumber
-    var query = orderByChild(usersRef, 'adhar');
-    query = equalTo(query, adharNumber);
+    // Push the new tax information to the user's tax data
+    set(userTaxRef, {
+        currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
+        taxAmount: taxAmount
+    });
 
-    // Retrieve the data
-    get(query)
-        .then(function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var userId = childSnapshot.key;
-
-                // Reference to the user's tax data
-                var userTaxRef = ref(database, 'users/' + userId + '/waterTax/' + currentMonthIndex);
-
-                // Push the new tax information to the user's tax data
-                var newTaxEntry = push(userTaxRef, {
-                    currentMonthIndex: currentMonthIndex,
-                    taxAmount: taxAmount
-                });
-
-                // Display success message or perform any other actions
-                console.log("Tax information saved to Firebase for user with adharNumber: " + adharNumber);
-                console.log("Tax entry key: " + newTaxEntry.key);
-            });
-        })
-        .catch(function (error) {
-            console.error("Error finding user with adharNumber: " + adharNumber, error);
-        });
+    // Display success message or perform any other actions
+    console.log("Tax information saved to Firebase for user with userName: " + userName);
 }
