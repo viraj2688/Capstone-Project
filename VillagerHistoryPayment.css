@@ -28,13 +28,11 @@ h2{
     border-radius: 5px;
 }
 
-<<<<<<< HEAD
 .product-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-=======
 .container-fluid {
     background-color: rgb(75, 127, 241);
 }
@@ -49,4 +47,3 @@ h2{
 button{
     background-color: rgb(17, 192, 37);
 }
->>>>>>> ba9ff2a3f2a0e16e055b2ffd6ea7c6a58b4b7a38
