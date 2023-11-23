@@ -1,7 +1,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -62,8 +62,9 @@ function savePenaltyToFirebase(userName, taxAmount) {
                 const userTaxRef = ref(database, `users/${uid}/Transaction/Penalty/${currentMonthIndex}-${currentYear}`);
                 set(userTaxRef, {
                     currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-                    taxAmount: taxAmount,
-                    // duedate : duedate
+                    PeneltyAmount: taxAmount,
+                    date : d,
+                    payment : "unpaind"
                 });
 
             } else {

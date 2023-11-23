@@ -49,61 +49,6 @@ btnCalculateWaterTax.addEventListener('click', function (e) {
     saveTaxToFirebase(userAdhar, waterTax); // Assuming 'userAdhar' is the 'userName' in your case
 });
 
-
-
-
-// ...
-
-// function saveTaxToFirebase(userId, taxAmount) {
-//     const userRef = ref(database, "users");
-
-//     // Create a query to find the user with a specific userId
-//     const userQuery = query(userRef, parseInt("userName"), equalTo(userId));
-
-//     get(userQuery).then((snapshot) => {
-//         if (snapshot.exists()) {
-//             // Get the user key from the snapshot
-//             const userKey = Object.keys(snapshot.val())[0];
-//             console.log(`User key for userId ${userId}: ${userKey}`);
-
-//             // Proceed with saving tax information using the user key
-//             const userTaxRef = ref(database, `users/${userKey}/waterTax`);
-
-//             // Push the new tax information to the user's tax data
-//             userTaxRef.push({
-//                 currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-//                 taxAmount: taxAmount,
-//             }, () => {
-//                 // Display success message or perform any other actions
-//                 console.log("Tax information saved to Firebase for user with userId: " + userId);
-//             });
-//         } else {
-//             console.error(`User not found with userId: ${userId}`);
-//         }
-//     });
-// }
-
-
-// Assuming you have already initialized Firebase and acquired a reference to the database
-// function saveTaxToFirebase() {
-//     const usersRef = ref(database, 'users');
-
-//     return get(usersRef).then((snapshot) => {
-//       if (snapshot.exists()) {
-//         const userData = snapshot.val();
-//         const usersArray = Object.entries(userData).map(([uid, user]) => ({ uid, userName: user.userName }));
-//         console.log(usersArray)
-//         return usersArray;
-//       } else {
-//         console.log('No data found in "users" node.');
-//         return [];
-//       }
-//     }).catch((error) => {
-//       console.error('Error fetching data:', error);
-//       return [];
-//     });
-//   }
-
 function saveTaxToFirebase(userName, taxAmount, /*duedate*/) {
     const usersRef = ref(database, 'users');
 
@@ -122,6 +67,7 @@ function saveTaxToFirebase(userName, taxAmount, /*duedate*/) {
                     currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
                     taxAmount: taxAmount,
                     // duedate : duedate
+                    payment : "unpaid"
                 });
 
             } else {
