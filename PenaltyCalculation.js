@@ -59,7 +59,7 @@ function savePenaltyToFirebase(userName, taxAmount) {
                 const d = new Date();
                 let currentMonthIndex = d.getMonth() + 1;
                 let currentYear = d.getFullYear();
-                const userTaxRef = ref(database, `users/${uid}/Transaction/waterTax/${currentMonthIndex}-${currentYear}`);
+                const userTaxRef = ref(database, `users/${uid}/Transaction/Penalty/${currentMonthIndex}-${currentYear}`);
                 set(userTaxRef, {
                     currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
                     taxAmount: taxAmount,
