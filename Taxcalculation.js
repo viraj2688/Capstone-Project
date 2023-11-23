@@ -1,7 +1,10 @@
 // Firebase initialization
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, set, child, get, equalTo, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+
+
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,13 +27,14 @@ const WaterVolume = document.getElementById("volume_of_water_usage");
 const WaterRate = document.getElementById("rate_of_water");
 const resultElement = document.getElementById("result");
 const btnCalculateWaterTax = document.getElementById("btnCalculateWaterTax");
-const user_adhar = document.getElementById("user_adhar_for_tax");
+const userName = document.getElementById("user_adhar_for_tax");
+
 
 btnCalculateWaterTax.addEventListener('click', function (e) {
     const connections = parseFloat(NumberOfConnections.value);
     const volume = parseFloat(WaterVolume.value);
     const rate = parseFloat(WaterRate.value);
-    const userAdhar = user_adhar.value;
+    const userAdhar = userName.value;
 
     // Check if the input values are valid numbers
     if (isNaN(connections) || isNaN(volume) || isNaN(rate)) {
@@ -38,102 +42,99 @@ btnCalculateWaterTax.addEventListener('click', function (e) {
         return;
     }
 
-    // Calculate the water tax
-    const waterTax = connections * volume * rate;
+    const waterTax = connections * volume * rate; // Calculate the water tax    
+    resultElement.textContent = "Amount of Tax :  " + waterTax.toFixed(2); // Display the result on the HTML page
 
-    // Display the result on the HTML page
-    resultElement.textContent = "Amount of Tax :  " + waterTax.toFixed(2);
 
-    // Assuming 'userAdhar' is the 'userName' in your case
-    saveTaxToFirebase(userAdhar, waterTax);
+    saveTaxToFirebase(userAdhar, waterTax); // Assuming 'userAdhar' is the 'userName' in your case
 });
 
-// Function to save tax information to Firebase
-// function saveTaxToFirebase(userName, taxAmount) {
-//     const d = new Date();
-//     let currentMonthIndex = d.getMonth() + 1;
-//     let currentYear = d.getFullYear();
 
-//     // Reference to the user's tax data
-//     var userTaxRef = ref(database, `users/${userName}/waterTax/${currentMonthIndex}-${currentYear}`);
 
-//     // Push the new tax information to the user's tax data
-//     set(userTaxRef, {
-//         currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-//         taxAmount: taxAmount
+
+// ...
+
+// function saveTaxToFirebase(userId, taxAmount) {
+//     const userRef = ref(database, "users");
+
+//     // Create a query to find the user with a specific userId
+//     const userQuery = query(userRef, parseInt("userName"), equalTo(userId));
+
+//     get(userQuery).then((snapshot) => {
+//         if (snapshot.exists()) {
+//             // Get the user key from the snapshot
+//             const userKey = Object.keys(snapshot.val())[0];
+//             console.log(`User key for userId ${userId}: ${userKey}`);
+
+//             // Proceed with saving tax information using the user key
+//             const userTaxRef = ref(database, `users/${userKey}/waterTax`);
+
+//             // Push the new tax information to the user's tax data
+//             userTaxRef.push({
+//                 currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
+//                 taxAmount: taxAmount,
+//             }, () => {
+//                 // Display success message or perform any other actions
+//                 console.log("Tax information saved to Firebase for user with userId: " + userId);
+//             });
+//         } else {
+//             console.error(`User not found with userId: ${userId}`);
+//         }
 //     });
-
-//     // Display success message or perform any other actions
-//     console.log("Tax information saved to Firebase for user with userName: " + userName);
 // }
 
-// Function to retrieve a user based on userName
-function getUserByUserName(userName, callback) {
-    var usersRef = ref(database, 'users');
 
-    usersRef.orderByChild('userName').equalTo(userName).once('value')
-        .then(function (snapshot) {
-            if (snapshot.exists()) {
-                // Get the user data
-                const userData = snapshot.val();
+// Assuming you have already initialized Firebase and acquired a reference to the database
+// function saveTaxToFirebase() {
+//     const usersRef = ref(database, 'users');
 
-                // Assuming there's only one user with the specified userName
-                const userId = Object.keys(userData)[0];
+//     return get(usersRef).then((snapshot) => {
+//       if (snapshot.exists()) {
+//         const userData = snapshot.val();
+//         const usersArray = Object.entries(userData).map(([uid, user]) => ({ uid, userName: user.userName }));
+//         console.log(usersArray)
+//         return usersArray;
+//       } else {
+//         console.log('No data found in "users" node.');
+//         return [];
+//       }
+//     }).catch((error) => {
+//       console.error('Error fetching data:', error);
+//       return [];
+//     });
+//   }
 
-                // Call the callback function with the user data
-                callback(userId, userData[userId]);
+function saveTaxToFirebase(userName, taxAmount, /*duedate*/) {
+    const usersRef = ref(database, 'users');
+
+    return get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const userEntry = Object.entries(userData).find(([uid, user]) => user.userName === userName);
+
+            if (userEntry) {
+                const [uid, user] = userEntry;
+                const d = new Date();
+                let currentMonthIndex = d.getMonth() + 1;
+                let currentYear = d.getFullYear();
+                const userTaxRef = ref(database, `users/${uid}/Transaction/waterTax/${currentMonthIndex}-${currentYear}`);
+                set(userTaxRef, {
+                    currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
+                    taxAmount: taxAmount,
+                    // duedate : duedate
+                });
+
             } else {
-                // User with the specified userName does not exist
-                callback(null);
+                console.log(`User with username ${userName} not found.`);
+                return null;
             }
-        })
-        .catch(function (error) {
-            console.error("Error retrieving user by userName:", error);
-            callback(null); // Assume an error occurred
-        });
-}
-
-btnCalculateWaterTax.addEventListener('click', function (e) {
-    const connections = parseFloat(NumberOfConnections.value);
-    const volume = parseFloat(WaterVolume.value);
-    const rate = parseFloat(WaterRate.value);
-    const userAdhar = user_adhar.value;
-
-    // Check if the input values are valid numbers
-    if (isNaN(connections) || isNaN(volume) || isNaN(rate)) {
-        alert("Please enter valid numbers for all fields.");
-        return;
-    }
-
-    // Calculate the water tax
-    const waterTax = connections * volume * rate;
-
-    // Retrieve user data by userName
-    getUserByUserName(userAdhar, function (userId, userData) {
-        if (userId) {
-            // Use userId in the path instead of userName
-            saveTaxToFirebase(userId, waterTax);
         } else {
-            console.log("User not found with userName:", userAdhar);
+            console.log('No data found in "users" node.');
+            return null;
         }
+    }).catch((error) => {
+        console.error('Error fetching data:', error);
+        return null;
     });
-});
-
-// Function to save tax information to Firebase
-function saveTaxToFirebase(userId, taxAmount) {
-    const d = new Date();
-    let currentMonthIndex = d.getMonth() + 1;
-    let currentYear = d.getFullYear();
-
-    // Reference to the user's tax data using userId
-    var userTaxRef = ref(database, `users/${userId}/waterTax/${currentMonthIndex}-${currentYear}`);
-
-    // Push the new tax information to the user's tax data
-    set(userTaxRef, {
-        currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-        taxAmount: taxAmount
-    });
-
-    // Display success message or perform any other actions
-    console.log("Tax information saved to Firebase for user with userId: " + userId);
 }
+
