@@ -46,20 +46,36 @@ btnPeneltyCal.addEventListener('click', function (e) {
     savePenaltyToFirebase(userAdhar, Penelty );
 });
 
-function savePenaltyToFirebase(userName, amount) {
-    const d = new Date();
-    let currentMonthIndex = d.getMonth() + 1;
-    let currentYear = d.getFullYear();
+function savePenaltyToFirebase(userName, taxAmount) {
+    const usersRef = ref(database, 'users');
 
-    // Reference to the user's tax data
-    var userTaxRef = ref(database, `users/${userName}/PenaltyWaterTax/${currentMonthIndex}-${currentYear}`);
+    return get(usersRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const userData = snapshot.val();
+            const userEntry = Object.entries(userData).find(([uid, user]) => user.userName === userName);
 
-    // Push the new tax information to the user's tax data
-    set(userTaxRef, {
-        currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-        taxAmount: amount
+            if (userEntry) {
+                const [uid, user] = userEntry;
+                const d = new Date();
+                let currentMonthIndex = d.getMonth() + 1;
+                let currentYear = d.getFullYear();
+                const userTaxRef = ref(database, `users/${uid}/Transaction/waterTax/${currentMonthIndex}-${currentYear}`);
+                set(userTaxRef, {
+                    currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
+                    taxAmount: taxAmount,
+                    // duedate : duedate
+                });
+
+            } else {
+                console.log(`User with username ${userName} not found.`);
+                return null;
+            }
+        } else {
+            console.log('No data found in "users" node.');
+            return null;
+        }
+    }).catch((error) => {
+        console.error('Error fetching data:', error);
+        return null;
     });
-
-    // Display success message or perform any other actions
-    console.log("Tax information saved to Firebase for user with userName: " + userName);
 }
