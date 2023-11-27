@@ -2,8 +2,6 @@ const btnPayment = document.getElementById("PaymentBtn");
 
 btnPayment.addEventListener('click', function paymentProcess() {
 
-
-
     var options = {
         "key": "rzp_test_UOCSpmDWDIAYLg", // Enter the Key ID generated from the Dashboard
         "amount": 320*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 means 50000 paise or ₹500.
@@ -11,7 +9,7 @@ btnPayment.addEventListener('click', function paymentProcess() {
         "name": "Grampanchayat Devevadi",
         "description": "Tutorial",
         "image": "",// Replace this with the order_id created using Orders API (https://razorpay.com/docs/api/orders).
-        "handler": function (response){
+        "handler":  function (response){
             savetoDB(response);
             $('#myModal').modal();
         },

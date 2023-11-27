@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-analytics.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,34 +22,102 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app); // Initialize Firebase Auth
 const database = getDatabase();
 
-// elements form front end
-const btnPayment = document.getElementById("PaymentBtn");
+// Function to display tax and penalty calculations
+// function displayCalculations(user, type_of_tax) {
+//   const userRef = ref(database, `users/${user.uid}/Transaction/${type_of_tax}`);
+//   const list = document.getElementById(type_of_tax);
 
-function displayUserData(user) { // Function to display user data on the dashboard
-  const database = getDatabase();// Get a reference to the database
+//   get(userRef).then((snapshot) => {
+//     if (snapshot.exists()) {
+//       const calculation_data = snapshot.val();
 
-  const userRef = ref(database, `users/${user.uid}/Transaction/${type_of_tax}`);// Assuming you have a 'users' collection in your database
-  // });
-  userRef.on('value', (snapshot) => {
+//       // Clear existing content
+//       list.innerHTML = '';
+
+//       for (const data in calculation_data) {
+//         const calculation = calculation_data[data];
+//         const listItem = document.createElement('li');
+//         listItem.textContent = `date : ${calculation.currentMonthIndex} paymable amount : ${calculation.taxAmount}`;
+
+//         // Create a button for each entry
+//         const printButton = document.createElement('button');
+//         printButton.textContent = 'pay';
+//         printButton.addEventListener('click', () => {
+//           // Print the amount to the console
+//           console.log(`Amount for ${type_of_tax}: ${calculation.taxAmount}`);
+//         });
+
+//         listItem.appendChild(printButton);
+
+//         // Append to the correct list
+//         list.appendChild(listItem);
+//       }
+//     } else {
+//       console.error(`No ${type_of_tax} calculations found in the database`);
+//     }
+//   });
+// }
+
+// Function to display tax and penalty calculations in a table
+function displayCalculations(user, type_of_tax) {
+  const userRef = ref(database, `users/${user.uid}/Transaction/${type_of_tax}`);
+  const table = document.getElementById(type_of_tax);
+
+  get(userRef).then((snapshot) => {
     if (snapshot.exists()) {
-      const transaction_data = snapshot.val();
-      const tableBody = document.getElementById('user-table-body');
-      tableBody.innerHTML = ''; // Clear existing table content
-  
-      for (const data in transaction_data) {
-        const user = transaction_data[data];
-        const tableRow = document.createElement('ul');
-        let paymentStatusDisplay = user.payment === 'paid' ? 'Paid' : `<button onclick="makeTransaction('${user.currentMonthIndex}', ${user.taxAmount})">Pay Now</button>`;
+      const calculation_data = snapshot.val();
 
-        tableRow.innerHTML = `
-          <li>${user.currentMonthIndex}</li>
-          <li>${user.taxAmount}</li>
-          <li>${paymentStatusDisplay}</li>
-        `;
-        tableBody.appendChild(tableRow);
+      // Clear existing content
+      table.innerHTML = '';
+
+      // Create table headers
+      const headerRow = document.createElement('tr');
+      const dateHeader = document.createElement('th');
+      dateHeader.textContent = 'Date';
+      headerRow.appendChild(dateHeader);
+      const amountHeader = document.createElement('th');
+      amountHeader.textContent = 'Amount Payable';
+      headerRow.appendChild(amountHeader);
+      const actionHeader = document.createElement('th');
+      actionHeader.textContent = 'Action';
+      headerRow.appendChild(actionHeader);
+      table.appendChild(headerRow);
+
+      // Populate table rows
+      for (const data in calculation_data) {
+        const calculation = calculation_data[data];
+        const row = document.createElement('tr');
+
+        // Date column
+        const dateCell = document.createElement('td');
+        dateCell.textContent = calculation.currentMonthIndex;
+        row.appendChild(dateCell);
+
+        // Amount Payable column
+        const amountCell = document.createElement('td');
+        amountCell.textContent = calculation.taxAmount;
+        row.appendChild(amountCell);
+
+        // Action column (button)
+        const actionCell = document.createElement('td');
+        const payButton = document.createElement('button');
+        payButton.textContent = 'Pay';
+        payButton.addEventListener('click', () => {
+          // Print the amount to the console or perform other actions
+          console.log(`Amount for ${type_of_tax}: ${calculation.taxAmount}`);
+
+
+          makeTransaction(type_of_tax ,calculation.taxAmount,);
+
+        });
+        actionCell.appendChild(payButton);
+        row.appendChild(actionCell);
+
+        // Append the row to the table
+        table.appendChild(row);
       }
     } else {
-      console.error('No users found in the database');
+      console.error(`No ${type_of_tax} calculations found in the database`);
     }
   });
 }
@@ -57,42 +125,70 @@ function displayUserData(user) { // Function to display user data on the dashboa
 // Check if a user is signed in
 auth.onAuthStateChanged(function (user) {
   if (user) {
-    displayUserData(user);// User is signed in
+    // Display waterTax calculations
+    displayCalculations(user, 'waterTax');
+
+    // Display penalty calculations
+    displayCalculations(user, 'Penalty');
   } else {
-    console.log('No user is signed in.');// No user is signed in
+    console.log('No user is signed in.');
   }
 });
 
-function makeTransaction(disription,amount) {
+
+// Check if a user is signed in
+auth.onAuthStateChanged(function (user) {
+  if (user) {
+    // Display tax calculations
+    displayCalculations(user, 'waterTax');
+
+    // Display penalty calculations
+    displayCalculations(user, 'Penalty');
+  } else {
+    console.log('No user is signed in.');
+  }
+});
+
+
+function makeTransaction(disription, amount) {
 
   var options = {
-      "key": "rzp_test_UOCSpmDWDIAYLg", // Enter the Key ID generated from the Dashboard
-      "amount": parseInt(`${amount}`)*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 means 50000 paise or ₹500.
-      "currency": "INR",
-      "name": "Grampanchayat Devevadi",
-      "description": `${disription}`,
-      "image": "image/ग्रामपंचायत देववाडी.png",// Replace this with the order_id created using Orders API (https://razorpay.com/docs/api/orders).
-      "handler":  function (response){
-          savetoDB(response);
-          $('#myModal').modal();
-      },
-      "prefill": {
-          "name": `${user_actual_name}`,
-          "email": `${user_email}`,
-          "contact": `${user_phone_number}`
-      },
+    "key": "rzp_test_UOCSpmDWDIAYLg", // Enter the Key ID generated from the Dashboard
+    "amount": parseInt(`${amount}`) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 means 50000 paise or ₹500.
+    "currency": "INR",
+    "name": "Grampanchayat Devevadi",
+    "image": {
+      src: "image/logo.svg", // Path to your modified SVG file
+      width: '10px', // Specify the width
+      height: '50px' // Specify the height
+    },
+    "logo": {
+      src: "image/logo.svg", // Path to your modified SVG file
+      width: '10px', // Specify the width
+      height: '50px' // Specify the height
+    },// Replace this with the order_id created using Orders API (https://razorpay.com/docs/api/orders).
+    "description": `${disription}`,
+    "handler": function (response) {
+      savetoDB(response);
+      $('#myModal').modal();
+    },
+    // "prefill": {
+    //     "name": `${user_actual_name}`,
+    //     "email": `${user_email}`,
+    //     "contact": `${user_phone_number}`
+    // },
   }
   var propay = new Razorpay(options);
   propay.open();
 };
 
 
-function savetoDB(response) {
+function savetoDB(response, type_of_tax) {
   // console.log(response)
   var payRef = ref(database, `users/uid/Transaction/${type_of_tax}/${date}`);
 
   payRef.set({
-  payment : "paid",
-  payment_id : response.razorpay_payment_id
+    payment: "paid",
+    payment_id: response.razorpay_payment_id
   })
 }
