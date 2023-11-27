@@ -62,7 +62,7 @@ function savePenaltyToFirebase(userName, taxAmount) {
                 const userTaxRef = ref(database, `users/${uid}/Transaction/Penalty/${currentMonthIndex}-${currentYear}`);
                 set(userTaxRef, {
                     currentMonthIndex: `${currentMonthIndex}.${currentYear}`,
-                    PeneltyAmount: taxAmount,
+                    taxAmount: taxAmount,
                     date : d,
                     payment : "unpaind"
                 });
